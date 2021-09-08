@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from '/styles/Home.module.css'
 
-const Home: React.FC = () => {
-  return (
+const About: React.FC<{props?: any}> = () => {
+  return(
     <div className={styles.container}>
-      hello world
+      I am an about
     </div>
   )
 }
 
-export default Home;
+export default About;
