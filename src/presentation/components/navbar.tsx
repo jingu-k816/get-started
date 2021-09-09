@@ -1,5 +1,5 @@
 import React from 'react';
-import {Breadcrumbs, Link} from '@material-ui/core';
+import { Breadcrumbs, Link } from '@material-ui/core';
 
 const navStyle = {
   display: 'flex',
@@ -9,7 +9,7 @@ const navStyle = {
   borderBottom: '2px solid #B0B0B0'
 };
 
-const NavBar: React.FC<{props?: any}> = () => {
+const NavBar: React.FC = () => {
   return(
     <nav style={navStyle}>
       <Breadcrumbs aria-label="breadcrumb">
