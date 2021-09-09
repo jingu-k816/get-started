@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect } from 'react';
 import apiCallFunc from '../../infrastructure/api/jsonCall';
 import { makeStyles } from '@material-ui/core/styles';
-import {Card, CardContent, Typography, Grid, Button} from '@material-ui/core/';
-import LoadButton from './LoadButton';
+import { Card, CardContent, Typography, Grid } from '@material-ui/core/';
+import Button from './Button';
+import useItemFetch from '../../application/hook';
 
 const useStyles = makeStyles({
   root: {
@@ -21,21 +22,23 @@ const useStyles = makeStyles({
     fontWeight: 'bold'
   },
 });
-const ItemCards: React.FC<{props?: any}> = () => {
+
+const ItemCards: React.FC = () => {
   const classes = useStyles();
 
-  const [data, setData] = useState(null);
+  const { data, setData, showMore, showMoreItems } = useItemFetch(); 
 
   useEffect(() => {
+    //Resolves promise to set the data from JSON into the custom hook.
     apiCallFunc().then(res => setData(res.items));
   },[])
 
   return (
     <div>
       <Grid direction="row" container>
-      {data && data.map((item) => {
+      {data && data.slice(0, showMore).map((item) => {
         return (
-          <Grid key={item.name} item md={4} xs={4} lg={4} spacing={2}>
+          <Grid key={item.name} item md={4} xs={4} lg={4}>
             <Card className={classes.root}>
               <CardContent>
                 <Typography className={classes.title}  gutterBottom>
@@ -46,11 +49,11 @@ const ItemCards: React.FC<{props?: any}> = () => {
                 </Typography>
               </CardContent>
             </Card>
-            </Grid>
+          </Grid>
         )
       })}
       </Grid>
-      <LoadButton />
+      <Button onChange={showMoreItems} name={'Load More...'}/>
     </div>
   )
 };
