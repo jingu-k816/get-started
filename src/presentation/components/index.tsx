@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Index: React.FC<{props?: any}> = () => {
+const Index: React.FC = () => {
   return (
     <div>
-      This is an index page.
+      I am an index.
     </div>
   )
 };
