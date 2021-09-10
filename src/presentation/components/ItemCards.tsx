@@ -32,7 +32,8 @@ const ItemCards: React.FC = () => {
     //Resolves promise to set the data from JSON into the custom hook.
     apiCallFunc().then(res => setData(res.items));
   },[setData])
-  
+  console.log("length of data", data?.length);
+  console.log("show more", showMore);
   return (
     <div>
       <Grid direction="row" container>
@@ -53,7 +54,7 @@ const ItemCards: React.FC = () => {
         )
       })}
       </Grid>
-      <Button onChange={showMoreItems} name={'Load More...'} />
+      {showMore < data?.length && <Button onChange={showMoreItems} name={'Load More...'}/>}
     </div>
   )
 };
