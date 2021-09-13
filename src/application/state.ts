@@ -9,12 +9,7 @@ export type Item = {
   desc: string;
 };
 
-export const dataState: RecoilState<Item[]>= atom({
-    key: 'JSONdata',
-    default: null
-});
-
-export const loadState: RecoilState<number> = atom({
-    key: 'LoadItem',
-    default: 10
+export const itemsState: RecoilState<Item[]>= atom({
+    key: 'itemsState',
+    default: []
 });

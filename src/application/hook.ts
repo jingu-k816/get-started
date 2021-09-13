@@ -1,10 +1,11 @@
 import { useRecoilState } from 'recoil';
-import { dataState, loadState } from './state';
+import { itemsState } from './state';
 import { Item } from './state';
+import { useState } from 'react';
 
 const useItemFetch = () => {
-  const [data, setData] = useRecoilState<Item[]>(dataState);
-  const [showMore, setShowMore] = useRecoilState<number>(loadState);
+  const [data, setData] = useRecoilState<Item[]>(itemsState);
+  const [showMore, setShowMore] = useState(10);
 
   const showMoreItems = () => {
     setShowMore((prev) => prev + 10);
@@ -14,7 +15,7 @@ const useItemFetch = () => {
     data,
     setData,
     showMore,
-    showMoreItems
+    showMoreItems,
   };
 }
 
