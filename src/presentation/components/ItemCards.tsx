@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import apiCallFunc from '../../infrastructure/api/jsonCall';
+import fetchItems from '../../infrastructure/api/fetch_Items';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core/';
 import Button from './Button';
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   title: {
     fontSize: 20,
     fontWeight: 'bold'
-  },
+  }
 });
 
 const ItemCards: React.FC = () => {
@@ -30,12 +30,25 @@ const ItemCards: React.FC = () => {
 
   useEffect(() => {
     //Resolves promise to set the data from JSON into the custom hook.
-    apiCallFunc().then(res => setData(res.items));
+    fetchItems()
+    .then(res => setData(res.items))
+    .catch(err => setData(err));
   },[setData])
+
+  //Loading state
+  if(data.length === 0) {
+      return(<h1> Loading Items... </h1>);
+  };
+
+  //error state
+  if(!Array.isArray(data)) {
+    return(<h1>Failed to load items</h1>)
+  }
+
   return (
     <div>
       <Grid direction="row" container>
-      {data && data.slice(0, showMore).map((item) => {
+      {Array.isArray(data) && data.slice(0, showMore).map((item) => {
         return (
           <Grid key={item.name} item md={4} xs={4} lg={4}>
             <Card className={classes.root}>
@@ -52,7 +65,7 @@ const ItemCards: React.FC = () => {
         )
       })}
       </Grid>
-      {showMore < data?.length && <Button onChange={showMoreItems} name={'Load More...'}/>}
+      { showMore < data.length && <Button onChange={showMoreItems} name={'Load More...'}/>}
     </div>
   )
 };
