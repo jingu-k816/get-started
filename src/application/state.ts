@@ -1,15 +1,6 @@
 import { RecoilState, atom } from 'recoil';
 
-export type Response = {
-  items: Item[]; 
-};
-
-export type Item = {
-  name: string;
-  desc: string;
-};
-
-export const itemsState: RecoilState<Item[]>= atom({
+export const itemsState: RecoilState<string[]>= atom({
     key: 'itemsState',
     default: []
 });
