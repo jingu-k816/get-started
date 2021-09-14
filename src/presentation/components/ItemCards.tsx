@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core/';
 import Button from './Button';
 import useItems from '../../application/hook';
+import LoadStatus from './LoadStatus';
 
 const useStyles = makeStyles({
   root: {
@@ -24,17 +25,12 @@ const useStyles = makeStyles({
 
 const ItemCards: React.FC = () => {
   const classes = useStyles();
-
-  const { data, showMoreItems } = useItems(); 
-
-  //Loading state
-  if(data.length === 0) {
-      return(<h1> Loading Items... </h1>);
-  };
+  const { data, showMoreItems, showStatus } = useItems(); 
 
   return (
     <div>
       <Grid direction="row" container>
+      {showStatus? <LoadStatus message="Loading Items..." /> : false}
       {Array.isArray(data) && data.map((item, index) => {
         return (
           <Grid key={index} item md={4} xs={4} lg={4}>
@@ -49,7 +45,7 @@ const ItemCards: React.FC = () => {
         )
       })}
       </Grid>
-      {Array.isArray(data) && <Button onChange={showMoreItems} name={'Load More...'}/>}
+      {!showStatus && <Button onChange={showMoreItems} name={'Load More...'}/>}
     </div>
   )
 };
