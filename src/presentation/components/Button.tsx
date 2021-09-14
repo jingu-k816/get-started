@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from '@material-ui/core';
 
 interface LoadButtonProps {
-  onChange: React.MouseEventHandler<HTMLButtonElement>,
+  onChange: () => void,
   name: string
 }
 
