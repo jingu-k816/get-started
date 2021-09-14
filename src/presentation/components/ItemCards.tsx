@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import fetchItems from '../../infrastructure/api/fetch_Items';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core/';
 import Button from './Button';
-import useItemFetch from '../../application/hook';
+import useItems from '../../application/hook';
 
 const useStyles = makeStyles({
   root: {
@@ -26,38 +25,23 @@ const useStyles = makeStyles({
 const ItemCards: React.FC = () => {
   const classes = useStyles();
 
-  const { data, setData, showMore, showMoreItems } = useItemFetch(); 
-
-  useEffect(() => {
-    //Resolves promise to set the data from JSON into the custom hook.
-    fetchItems()
-    .then(res => setData(res.items))
-    .catch(err => setData(err));
-  },[setData])
+  const { data, showMoreItems } = useItems(); 
 
   //Loading state
   if(data.length === 0) {
       return(<h1> Loading Items... </h1>);
   };
 
-  //error state
-  if(!Array.isArray(data)) {
-    return(<h1>Failed to load items</h1>)
-  }
-
   return (
     <div>
       <Grid direction="row" container>
-      {Array.isArray(data) && data.slice(0, showMore).map((item) => {
+      {Array.isArray(data) && data.map((item, index) => {
         return (
-          <Grid key={item.name} item md={4} xs={4} lg={4}>
+          <Grid key={index} item md={4} xs={4} lg={4}>
             <Card className={classes.root}>
               <CardContent>
                 <Typography className={classes.title}  gutterBottom>
-                  {item.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {item.desc}
+                  {item}
                 </Typography>
               </CardContent>
             </Card>
@@ -65,7 +49,7 @@ const ItemCards: React.FC = () => {
         )
       })}
       </Grid>
-      { showMore < data.length && <Button onChange={showMoreItems} name={'Load More...'}/>}
+      {Array.isArray(data) && <Button onChange={showMoreItems} name={'Load More...'}/>}
     </div>
   )
 };

@@ -1,22 +1,30 @@
 import { useRecoilState } from 'recoil';
 import { itemsState } from './state';
-import { Item } from './state';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import listItems from '../infrastructure/api/fetch_Items';
 
-const useItemFetch = () => {
-  const [data, setData] = useRecoilState<Item[]>(itemsState);
-  const [showMore, setShowMore] = useState(10);
+const useItems = () => {
+  const [data, setData] = useRecoilState<any>(itemsState);
+  let tempItemHolder;
 
-  const showMoreItems = () => {
-    setShowMore((prev) => prev + 10);
+  const showMoreItems = async() => {
+    await listItems().then(res => tempItemHolder = res);
+    
+    setData(prev => prev.concat(tempItemHolder));
   }
+
+  useEffect(() => {
+    //Resolves promise to set the data from JSON into the custom hook.
+    listItems()
+    .then(res => setData(res))
+    .catch(err => {throw err});
+  },[setData])
 
   return {
     data,
     setData,
-    showMore,
     showMoreItems,
   };
 }
 
-export default useItemFetch;
+export default useItems;
