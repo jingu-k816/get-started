@@ -7,19 +7,15 @@ const useItems = () => {
   const [data, setData] = useRecoilState<any>(itemsState);
   const [showStatus, setShowStatus] = useRecoilState<boolean>(loadStatusState);
 
-  const tempItemHolder = [...data];
-
   const showMoreItems = async() => {
     //shows loading status onClick then goes away when the items are fetched
     setShowStatus(true);
     await listItems()
             .then(res => {
               setShowStatus(false);
-              return tempItemHolder + res
+              return setData(prev => prev.concat(res));
             })
             .catch(err => {throw err});
-    
-    setData(prev => prev.concat(tempItemHolder));
   }
 
   useEffect(() => {
